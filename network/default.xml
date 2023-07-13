@@ -1,0 +1,18 @@
+<network>
+  <name>default</name>
+  <uuid>9a05da11-e96b-47f3-8253-a3a482e445f5</uuid>
+  <forward mode='nat'>
+    <nat>
+      <port start='1024' end='65535'/>
+    </nat>
+  </forward>
+  <bridge name='virbr0' stp='on' delay='0'/>
+  <mac address='52:54:00:0a:cd:21'/>
+  <ip address='192.168.122.1' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='192.168.122.2' end='192.168.122.254'/>
+      <host mac='52:54:00:35:0d:b4' name='KVM_template' ip='192.168.122.3'/>
+      <host mac='52:54:00:35:0d:b5' name='KVM_template' ip='192.168.122.4'/>
+    </dhcp>
+  </ip>
+</network>

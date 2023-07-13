@@ -1,0 +1,46 @@
+#!/bin/bash +x
+
+# In order to create rules to other VMs, just duplicate the below block and configure it accordingly.
+
+host_north_interface="eno8303"
+host_south_interface="ens2f0"
+guest_ports=( 22 80 443 4789 8529 9090 9100 10830 16443 10250 10255 25000 12379 10257 10259 19001 514 8127 )
+host_ports=( 2222 80 443 4789 8529 9090 9100 10830 16443 10250 10255 25000 12379 10257 10259 19001 514 8127 )
+
+
+#kvm_guest1="DomainManagerTemplate"
+kvm_guest1="DM_template"
+
+if [ "${1}" = "$kvm_guest1" ]; then
+	i=0
+	guest_north_ip="192.168.122.3"
+    guest_south_ip="192.168.122.4"
+
+
+	for guest_port in ${guest_ports[@]}; do
+                    if [ "${2}" = "stopped" ] || [ "${2}" = "reconnect" ]; then
+                    	/sbin/iptables -D FORWARD -i $host_north_interface -o virbr0 -p tcp -d $guest_north_ip --dport $guest_port -j ACCEPT
+                    	/sbin/iptables -t nat -D PREROUTING -i $host_north_interface -p tcp --dport ${host_ports[$i]} -j DNAT --to $guest_north_ip:$guest_port
+                    fi
+                    if [ "${2}" = "start" ] || [ "${2}" = "reconnect" ]; then
+                    	/sbin/iptables -I FORWARD -i $host_north_interface -o virbr0 -p tcp -d $guest_north_ip --dport $guest_port -j ACCEPT
+                    	/sbin/iptables -t nat -I PREROUTING -i $host_north_interface -p tcp --dport ${host_ports[$i]} -j DNAT --to $guest_north_ip:$guest_port
+                    fi
+                    let i++
+	done
+
+    for guest_port in ${guest_ports[@]}; do
+                    if [ "${2}" = "stopped" ] || [ "${2}" = "reconnect" ]; then
+                    	/sbin/iptables -D FORWARD -i $host_south_interface -o virbr0 -p tcp -d $guest_south_ip --dport $guest_port -j ACCEPT
+                    	/sbin/iptables -t nat -D PREROUTING -i $host_south_interface -p tcp --dport ${host_ports[$i]} -j DNAT --to $guest_south_ip:$guest_port
+                    fi
+                    if [ "${2}" = "start" ] || [ "${2}" = "reconnect" ]; then
+                    	/sbin/iptables -I FORWARD -i $host_south_interface -o virbr0 -p tcp -d $guest_south_ip --dport $guest_port -j ACCEPT
+                    	/sbin/iptables -t nat -I PREROUTING -i $host_south_interface -p tcp --dport ${host_ports[$i]} -j DNAT --to $guest_south_ip:$guest_port
+                    fi
+                    let i++
+	done
+
+fi
+
+

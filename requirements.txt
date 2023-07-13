@@ -1,0 +1,1 @@
+bridge-utils cpu-checker libvirt-clients libvirt-daemon qemu qemu-kvm libguestfs-tools virt-manager libvirt-daemon-system
