@@ -11,8 +11,6 @@
   <ip address='192.168.122.1' netmask='255.255.255.0'>
     <dhcp>
       <range start='192.168.122.2' end='192.168.122.254'/>
-      <host mac='52:54:00:35:0d:b4' name='KVM_template' ip='192.168.122.3'/>
-      <host mac='52:54:00:35:0d:b5' name='KVM_template' ip='192.168.122.4'/>
     </dhcp>
   </ip>
 </network>

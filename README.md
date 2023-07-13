@@ -1,4 +1,4 @@
-# This folder is a way to import a KVM onto a new baremetal machine.
+# This repo is a way to import a KVM onto a new baremetal machine.
 ## It **only** works for KVM's that are based on the default NAT network format.
 
 Before you copy the KVM image you should remove the system-id field from the arango-database, and any uls identifiers.
@@ -43,18 +43,3 @@ and also check that the Iptables forwarding is set.
 ```
 virsh list --all, sudo iptables -L
 ```
-
-#### If all that works then the KVM should be accessible via ssh port 2222, and through the web ui,
-#### and prometheus.
-
-### One of the first things to do when on the guest DM install is to clone the git repo below
-```
-http://stash.arrisi.com/scm/~ru1022/arango-utils-kvm-fork.git
-```
-*If this repo doesn't work please check this one, http://stash.arrisi.com/scm/~wc1034/arango-utils.git*
-#### Then move the contents into ~/bin/
-#### The user can then run
-```
-newip.sh
-```
-#### This will populate a newly created system id and renew the ssh keys
